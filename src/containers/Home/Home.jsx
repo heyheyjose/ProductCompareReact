@@ -5,7 +5,8 @@ import results from "../../data/products.json";
 const Home = () => {
   const [nameSearch, setNameSearch] = useState('');
   const [products, setProducts] = useState(results.products);
-  const [priceSearch, setPriceSearch] = useState(undefined);
+  const [priceSearch, setPriceSearch] = useState('Search by price');
+  const [searchQuery, setSearchQuery] = useState(undefined);
 
   const compareProducts = products.filter(
     (product) => product.compare
@@ -25,6 +26,12 @@ const Home = () => {
     );
   };
 
+  const search = (e) => {
+    if (e.key === 'Enter') {
+      setSearchQuery(e.target.value);
+    }
+  };
+
   return (
     <div className="home mt-5">
       <div className="row">
@@ -35,7 +42,9 @@ const Home = () => {
             placeholder="Search by price"
             value={priceSearch}
             onChange={handleChange}
+            onKeyDown={search}
           />
+          <label className="search-label">Press enter to search</label>
         </div>
       </div>
       <ProductList
@@ -43,6 +52,7 @@ const Home = () => {
         nameSearch={nameSearch}
         compare={compare}
         priceSearch={priceSearch}
+        searchQuery={searchQuery}
       />
       {compareProducts.length >= 1 && (
         <CompareTable products={compareProducts} />

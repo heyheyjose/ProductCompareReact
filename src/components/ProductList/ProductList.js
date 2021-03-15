@@ -1,30 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Product } from "..";
 
-const ProductList = ({ products, compare, nameSearch, priceSearch }) => {
-  const renderProducts = () => {
-    const filteredProducts = products.filter(product => {
-      return product.name.toLowerCase().includes(nameSearch.toLowerCase())
-    });
-    
+const ProductList = ({ products, compare, nameSearch, priceSearch, searchQuery }) => {
+  const [productList, setProductList] = useState([]);
 
-    const filterByPrice = products.filter(product => {
-      const price = parseFloat(product.price.split('').slice(1).join(''));
-  
-      if (priceSearch) {
-        return price <= priceSearch;
-      }
-
-      return products;
+  useEffect(() => {
+    const renderProducts = () => {
+      const filteredProducts = products.filter(product => {
+        return product.name.toLowerCase().includes(nameSearch.toLowerCase())
+      });
       
-    });
+  
+      const filterByPrice = products.filter(product => {
+        const price = parseFloat(product.price.split('').slice(1).join(''));
+    
+        if (priceSearch > 0) {
+          return price <= priceSearch;
+        }
+  
+        return products;
+      });
+  
+      return filterByPrice;
+    };
 
-    return filterByPrice;
-  };
+    setProductList(renderProducts);
+  }, [products, searchQuery]);
 
   return (
     <div className="row mt-3">
-      {renderProducts().map((product) => (
+      {productList.map((product) => (
         <Product key={product.id} product={product} compare={compare} />
       ))}
     </div>

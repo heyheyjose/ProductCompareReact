@@ -5,3 +5,8 @@ body {
   background: #f6f7f8;
   color: #393c45;
 }
+
+.search-label {
+  display: block;
+  font-size: small;
+}
