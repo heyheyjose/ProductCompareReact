@@ -8,6 +8,7 @@ class Home extends Component {
     this.state = {
       nameSearch: "",
       products: results.products,
+      priceSearch: undefined
     };
   }
 
@@ -16,7 +17,8 @@ class Home extends Component {
       (product) => product.compare
     );
     const handleChange = (event) => {
-      this.setState({ nameSearch: event.target.value });
+      console.log('event: ', event);
+      this.setState({ priceSearch: event.target.value });
     };
 
     const compare = (id) => {
@@ -35,9 +37,9 @@ class Home extends Component {
           <div className="col-12">
             <h2 className="mb-3">Compare Products</h2>
             <input
-              type="text"
-              placeholder="Search by name"
-              value={this.state.nameSearch}
+              type="number"
+              placeholder="Search by price"
+              value={this.state.priceSearch}
               onChange={(e) => handleChange(e)}
             />
           </div>
@@ -46,6 +48,7 @@ class Home extends Component {
           products={this.state.products}
           nameSearch={this.state.nameSearch}
           compare={compare}
+          priceSearch={this.state.priceSearch}
         />
         {compareProducts.length >= 1 && (
           <CompareTable products={compareProducts} />

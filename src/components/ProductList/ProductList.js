@@ -1,9 +1,25 @@
 import React from "react";
 import { Product } from "..";
 
-const ProductList = ({ products, compare, nameSearch }) => {
+const ProductList = ({ products, compare, nameSearch, priceSearch }) => {
   const renderProducts = () => {
-    return products;
+    const filteredProducts = products.filter(product => {
+      return product.name.toLowerCase().includes(nameSearch.toLowerCase())
+    });
+    
+
+    const filterByPrice = products.filter(product => {
+      const price = parseFloat(product.price.split('').slice(1).join(''));
+  
+      if (priceSearch) {
+        return price <= priceSearch;
+      }
+
+      return products;
+      
+    });
+
+    return filterByPrice;
   };
 
   return (
