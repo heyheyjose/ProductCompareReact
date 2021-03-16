@@ -1,31 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { Product } from "..";
 
-const ProductList = ({ products, compare, nameSearch, priceSearch, searchQuery }) => {
+const ProductList = ({ products, compare, nameOrPriceSearch, searchTerm }) => {
   const [productList, setProductList] = useState([]);
 
   useEffect(() => {
     const renderProducts = () => {
-      const filteredProducts = products.filter(product => {
-        return product.name.toLowerCase().includes(nameSearch.toLowerCase())
-      });
+      const regexForNumbers = /^-?\d+\.?\d*$/;
+
+      if (nameOrPriceSearch.match(regexForNumbers)) {
+        const priceSearch = parseFloat(nameOrPriceSearch);
+
+        return products.filter(product => {
+          const price = parseFloat(product.price.split('').slice(1).join(''));
       
-  
-      const filterByPrice = products.filter(product => {
-        const price = parseFloat(product.price.split('').slice(1).join(''));
+          if (priceSearch > 0) {
+            return price <= priceSearch;
+          }
     
-        if (priceSearch > 0) {
-          return price <= priceSearch;
-        }
-  
-        return products;
+          return product;
+        });
+      }
+
+      return products.filter(product => {
+        return product.name.toLowerCase().includes(nameOrPriceSearch.toLowerCase());
       });
-  
-      return filterByPrice;
     };
 
     setProductList(renderProducts);
-  }, [products, searchQuery]);
+  }, [products, searchTerm]);
 
   return (
     <div className="row mt-3">

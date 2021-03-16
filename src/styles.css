@@ -10,3 +10,7 @@ body {
   display: block;
   font-size: small;
 }
+
+.search-input {
+  width: 200px;
+}

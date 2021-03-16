@@ -1,19 +1,18 @@
-import React, { useState } from "react";
-import { CompareTable, ProductList } from "../../components";
-import results from "../../data/products.json";
+import React, { useState } from 'react';
+import { CompareTable, ProductList } from '../../components';
+import results from '../../data/products.json';
 
 const Home = () => {
-  const [nameSearch, setNameSearch] = useState('');
+  const [nameOrPriceSearch, setNameOrPriceSearch] = useState('');
   const [products, setProducts] = useState(results.products);
-  const [priceSearch, setPriceSearch] = useState('Search by price');
-  const [searchQuery, setSearchQuery] = useState(undefined);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const compareProducts = products.filter(
     (product) => product.compare
   );
 
   const handleChange = (event) => {
-    setPriceSearch(event.target.value);
+    setNameOrPriceSearch(event.target.value);
   };
 
   const compare = (id) => {
@@ -26,9 +25,9 @@ const Home = () => {
     );
   };
 
-  const search = (e) => {
-    if (e.key === 'Enter') {
-      setSearchQuery(e.target.value);
+  const search = (event) => {
+    if (event.key === 'Enter') {
+      setSearchTerm(event.target.value);
     }
   };
 
@@ -38,21 +37,21 @@ const Home = () => {
         <div className="col-12">
           <h2 className="mb-3">Compare Products</h2>
           <input
-            type="number"
-            placeholder="Search by price"
-            value={priceSearch}
+            type="text"
+            placeholder="Search by name or price"
+            value={nameOrPriceSearch}
             onChange={handleChange}
             onKeyDown={search}
+            className="search-input"
           />
           <label className="search-label">Press enter to search</label>
         </div>
       </div>
       <ProductList
         products={products}
-        nameSearch={nameSearch}
+        nameOrPriceSearch={nameOrPriceSearch}
         compare={compare}
-        priceSearch={priceSearch}
-        searchQuery={searchQuery}
+        searchTerm={searchTerm}
       />
       {compareProducts.length >= 1 && (
         <CompareTable products={compareProducts} />
